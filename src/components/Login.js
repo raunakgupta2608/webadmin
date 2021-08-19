@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import {
-  Card, CardBody,
-  CardTitle, Button, Form, FormGroup, Label, Input, FormText
-} from 'reactstrap';
+import { Card, CardBody, CardTitle, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import PropTypes from 'prop-types';
+import { useHistory } from 'react-router';
 
-const Login = (props) => {
+const Login = ({ setToken }) => {
     const style = { 
         backgroundColor: '#333', 
         borderColor: '#333',
@@ -16,6 +15,7 @@ const Login = (props) => {
 
     const [login, setLogin] = useState({username:"", password:""});
     const [disable, setDisable] = useState(false);
+    const history = useHistory();
 
     const {username, password} = login;
 
@@ -29,10 +29,14 @@ const Login = (props) => {
         if(e.key === "Enter") document.getElementById("submitBtn").click();
     }
 
-    const formData = (e) => {
-        // setDisable(!disable);
-        console.log(login);
+    const formData = (e) => {    
+        if(username!== "" && password!=="") {
+            setLogin({username:"", password:""});
+            setToken(username);
+            history.push('/home');
+        }
     }
+
 
   return (
     <div>
@@ -61,5 +65,9 @@ const Login = (props) => {
     </div>
   );
 };
+
+Login.propTypes = {
+    setToken: PropTypes.func.isRequired
+}
 
 export default Login;
